@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>AngularApp</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+<body>
+  <app-root></app-root>
+  <!-- 404s harmlessly in a plain browser (ng serve) — onerror flags that so main.ts
+       skips waiting for `deviceready`, which would otherwise never fire. On a real
+       Cordova build, cordova-android writes the real cordova.js into the platform's
+       www assets at build time; every plugin (window.plugins.*, window.TTS, …)
+       is unusable until it loads and fires deviceready — see main.ts's gate. This
+       script runs synchronously before Angular's own deferred bundle scripts below,
+       so the flag is reliably set (or not) before main.ts executes. -->
+  <script src="cordova.js" onerror="window.__cordovaUnavailable = true"></script>
+</body>
+</html>

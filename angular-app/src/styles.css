@@ -1,0 +1,31 @@
+/* Global resets so the WebView reads as a native screen, not a web page:
+   no default white background/margins showing at the edges, no browser-style
+   tap-flash or overscroll bounce/glow, no accidental text selection or
+   pull-to-zoom on what should behave like app chrome. */
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: #05050a;
+  overflow: hidden;
+  overscroll-behavior: none;
+  -webkit-text-size-adjust: 100%;
+  touch-action: manipulation;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+}
+
+body {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+button {
+  font: inherit;
+  -webkit-appearance: none;
+  appearance: none;
+}

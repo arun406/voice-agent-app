@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='utf-8'?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+        id="com.nothing.voiceagent.localllm"
+        version="0.1.0">
+    <name>LocalLLM</name>
+    <description>On-device LLM inference (llama.cpp) exposed to JS as window.LocalLLM.</description>
+
+    <js-module src="www/localllm.js" name="LocalLLM">
+        <clobbers target="LocalLLM" />
+    </js-module>
+
+    <hook type="before_build" src="scripts/addKotlinSupport.js" />
+
+    <platform name="android">
+        <config-file target="res/xml/config.xml" parent="/widget">
+            <feature name="LocalLLM">
+                <param name="android-package" value="com.nothing.voiceagent.localllm.LocalLLMPlugin" />
+            </feature>
+        </config-file>
+
+        <source-file src="src/android/LocalLLMPlugin.kt" target-dir="app/src/main/kotlin/com/nothing/voiceagent/localllm" />
+        <source-file src="src/android/LlamaBridge.kt" target-dir="app/src/main/kotlin/com/nothing/voiceagent/localllm" />
+
+        <!-- Enables Kotlin compilation (cordova-android's generated project is Java-only
+             by default) and adds coroutines, used by LocalLLMPlugin.kt to keep inference
+             off the UI thread. Guarded so it's a no-op if native-assist-plugin's own
+             kotlin.gradle already applied the plugin first — see that file's comment. -->
+        <framework src="lib/android/kotlin.gradle" custom="true" type="gradleReference" />
+
+        <!-- Builds llama_bridge.cpp + vendored llama.cpp (src/android/cpp/) via CMake/NDK
+             and links the result into libllama_bridge.so, loaded from LlamaBridge.kt via
+             System.loadLibrary("llama_bridge"). See README.md — path here is unverified. -->
+        <framework src="lib/android/llama.gradle" custom="true" type="gradleReference" />
+    </platform>
+</plugin>

@@ -1,0 +1,10 @@
+{
+  "name": "cordova-plugin-local-llm",
+  "version": "0.1.0",
+  "description": "On-device LLM inference (llama.cpp) exposed to JS as window.LocalLLM.",
+  "cordova": {
+    "id": "com.nothing.voiceagent.localllm",
+    "platforms": ["android"]
+  },
+  "keywords": ["cordova", "llm", "llama.cpp"]
+}

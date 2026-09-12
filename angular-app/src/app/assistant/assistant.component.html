@@ -1,0 +1,130 @@
+<div class="screen">
+  <div class="aurora" aria-hidden="true">
+    <span class="aurora-blob b1"></span>
+    <span class="aurora-blob b2"></span>
+    <span class="aurora-blob b3"></span>
+  </div>
+
+  <div class="brand">Voice Agent</div>
+
+  <div class="response-area">
+    @if (assistant.turn()?.transcript) {
+      <p class="transcript">"{{ assistant.turn()?.transcript }}"</p>
+    }
+
+    @if (assistant.turn()?.error) {
+      <div class="card card-error">
+        <svg class="card-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 9v4M12 16.5h.01M10.29 3.86l-8.16 14.14A1.5 1.5 0 0 0 3.43 20.4h17.14a1.5 1.5 0 0 0 1.3-2.4L13.71 3.86a1.5 1.5 0 0 0-2.42 0Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+        </svg>
+        <p>{{ assistant.turn()?.error }}</p>
+      </div>
+    } @else if (assistant.turn()?.answer) {
+      <div class="card">
+        <p class="answer">{{ assistant.turn()?.answer }}</p>
+        @if (resultEntries().length) {
+          <div class="result-grid">
+            @for (entry of resultEntries(); track entry[0]) {
+              <div class="result-row">
+                <span class="result-key">{{ entry[0] }}</span>
+                <span class="result-value">{{ entry[1] }}</span>
+              </div>
+            }
+          </div>
+        }
+        @if (locationFor(assistant.turn()?.toolResult)) {
+          <button class="directions-btn" (click)="getDirections(assistant.turn()?.toolResult)">
+            Get directions
+          </button>
+        }
+      </div>
+      @if (resultList(); as items) {
+        <div class="result-list">
+          @for (item of items; track $index) {
+            <div class="result-list-card">
+              <div class="result-grid">
+                @for (entry of entriesFor(item); track entry[0]) {
+                  <div class="result-row">
+                    <span class="result-key">{{ entry[0] }}</span>
+                    <span class="result-value">{{ entry[1] }}</span>
+                  </div>
+                }
+              </div>
+              @if (locationFor(item)) {
+                <button class="directions-btn" (click)="getDirections(item)">Get directions</button>
+              }
+            </div>
+          }
+        </div>
+      }
+    }
+  </div>
+
+  <div class="top-spacer"></div>
+
+  <div
+    class="orb-area"
+    [class.listening]="assistant.state() === 'listening'"
+    [class.thinking]="assistant.state() === 'thinking'"
+    [class.speaking]="assistant.state() === 'speaking'"
+    [class.error]="assistant.state() === 'error'"
+  >
+    <div class="orb-stage">
+      <span class="ring ring-1" aria-hidden="true"></span>
+      <span class="ring ring-2" aria-hidden="true"></span>
+      <span class="thinking-ring" aria-hidden="true"></span>
+
+      <button
+        class="orb"
+        [class.listening]="assistant.state() === 'listening'"
+        [class.thinking]="assistant.state() === 'thinking'"
+        [class.speaking]="assistant.state() === 'speaking'"
+        [class.error]="assistant.state() === 'error'"
+        (click)="onOrbClick()"
+        aria-label="Voice assistant"
+      >
+        <span class="orb-core"></span>
+        <span class="orb-glass"></span>
+        @if (assistant.state() === 'idle') {
+          <svg class="mic-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 1 0-6 0v6a3 3 0 0 0 3 3Z" fill="currentColor"/>
+            <path d="M19 11a1 1 0 1 0-2 0 5 5 0 0 1-10 0 1 1 0 1 0-2 0 7 7 0 0 0 6 6.93V20H9a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2h-2v-2.07A7 7 0 0 0 19 11Z" fill="currentColor"/>
+          </svg>
+        }
+        @if (assistant.state() === 'error') {
+          <svg class="mic-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 9v4M12 16.5h.01M10.29 3.86l-8.16 14.14A1.5 1.5 0 0 0 3.43 20.4h17.14a1.5 1.5 0 0 0 1.3-2.4L13.71 3.86a1.5 1.5 0 0 0-2.42 0Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+          </svg>
+        }
+      </button>
+    </div>
+
+    <div class="eq" aria-hidden="true">
+      @for (bar of eqBars; track bar) {
+        <span class="eq-bar"></span>
+      }
+    </div>
+
+    <p class="state-label">{{ stateLabel() }}</p>
+
+    @if (assistant.state() === 'idle' || assistant.state() === 'error') {
+      <div class="photo-actions">
+        <button class="photo-btn" (click)="onTakePhoto()" aria-label="Take photo">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M4 8a2 2 0 0 1 2-2h1.17a2 2 0 0 0 1.42-.59l.82-.82A2 2 0 0 1 10.83 4h2.34a2 2 0 0 1 1.42.59l.82.82A2 2 0 0 0 16.83 6H18a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+            <circle cx="12" cy="13" r="3.2" stroke="currentColor" stroke-width="1.6"/>
+          </svg>
+          <span>Take photo</span>
+        </button>
+        <button class="photo-btn" (click)="onChoosePhoto()" aria-label="Choose photo">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <rect x="3.5" y="4.5" width="17" height="15" rx="2" stroke="currentColor" stroke-width="1.6"/>
+            <circle cx="8.5" cy="9.5" r="1.5" fill="currentColor"/>
+            <path d="M4 16.5 8.5 12l3 3 3.5-4L20 16.5" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>
+          </svg>
+          <span>Choose photo</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

@@ -1,0 +1,20 @@
+// cordova-android's generated app module is Java-only by default; this enables Kotlin
+// compilation so this plugin's .kt files build. Guarded with hasPlugin so installing
+// this alongside local-llm-plugin (which carries an identical file, plus coroutines)
+// doesn't try to apply the Kotlin plugin twice regardless of install order.
+if (!project.plugins.hasPlugin('kotlin-android')) {
+    apply plugin: 'kotlin-android'
+}
+
+// Without this, Kotlin defaults its JVM target to match the JDK running Gradle (21
+// here) while cordova-android's own Java compile tasks target 11, and Gradle refuses
+// to link the two ("Inconsistent JVM-target compatibility").
+android {
+    kotlinOptions {
+        jvmTarget = "11"
+    }
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.9.24"
+}

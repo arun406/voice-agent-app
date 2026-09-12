@@ -1,0 +1,14 @@
+@if (!authRequired || auth.isAuthenticated()) {
+  <app-assistant></app-assistant>
+} @else {
+  <div class="signin-screen">
+    <div class="signin-brand">Voice Agent</div>
+    <p class="signin-copy">Sign in with your company account to get started.</p>
+    <button class="signin-btn" (click)="signIn()" [disabled]="auth.isAuthenticating()">
+      {{ auth.isAuthenticating() ? 'Signing in…' : 'Sign in' }}
+    </button>
+    @if (signInError()) {
+      <p class="signin-error">{{ signInError() }}</p>
+    }
+  </div>
+}

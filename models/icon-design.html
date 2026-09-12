@@ -1,0 +1,45 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+  html, body { margin: 0; padding: 0; }
+  .canvas {
+    width: 1024px;
+    height: 1024px;
+    background: #05050a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .glow {
+    position: absolute;
+    width: 900px;
+    height: 900px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(138,138,255,0.35), transparent 70%);
+  }
+  .orb {
+    width: 620px;
+    height: 620px;
+    border-radius: 42% 58% 55% 45% / 45% 42% 58% 55%;
+    background: radial-gradient(circle at 32% 28%, #a3a3ff, #ff5fa2 55%, #ffb86f 100%);
+    box-shadow:
+      0 0 160px 40px rgba(120, 100, 255, 0.55),
+      inset 0 0 100px rgba(255, 255, 255, 0.25);
+    position: relative;
+  }
+  .core {
+    position: absolute;
+    inset: 60px;
+    border-radius: inherit;
+    background: radial-gradient(circle at 38% 35%, rgba(255, 255, 255, 0.7), transparent 70%);
+  }
+</style>
+</head>
+<body>
+  <div class="canvas">
+    <div class="glow"></div>
+    <div class="orb"><div class="core"></div></div>
+  </div>
+</body></html>

@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='utf-8'?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+        id="com.nothing.voiceagent.assist"
+        version="0.1.0">
+    <name>NativeAssist</name>
+    <description>Registers this app as the system's default Assist app (long-press invocation, like Siri).</description>
+
+    <js-module src="www/nativeassist.js" name="NativeAssist">
+        <clobbers target="NativeAssist" />
+    </js-module>
+
+    <hook type="before_build" src="scripts/addKotlinSupport.js" />
+
+    <platform name="android">
+        <config-file target="res/xml/config.xml" parent="/widget">
+            <feature name="NativeAssist">
+                <param name="android-package" value="com.nothing.voiceagent.assist.NativeAssistPlugin" />
+            </feature>
+        </config-file>
+
+        <source-file src="src/android/VoiceAssistService.kt" target-dir="app/src/main/kotlin/com/nothing/voiceagent/assist" />
+        <source-file src="src/android/VoiceAssistSessionService.kt" target-dir="app/src/main/kotlin/com/nothing/voiceagent/assist" />
+        <source-file src="src/android/VoiceAssistSession.kt" target-dir="app/src/main/kotlin/com/nothing/voiceagent/assist" />
+        <source-file src="src/android/NativeAssistPlugin.kt" target-dir="app/src/main/kotlin/com/nothing/voiceagent/assist" />
+
+        <framework src="lib/android/kotlin.gradle" custom="true" type="gradleReference" />
+
+        <resource-file src="res/xml/voice_interaction_service.xml" target="res/xml/voice_interaction_service.xml" />
+
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+            <service android:name="com.nothing.voiceagent.assist.VoiceAssistService"
+                      android:permission="android.permission.BIND_VOICE_INTERACTION"
+                      android:exported="true">
+                <intent-filter>
+                    <action android:name="android.service.voice.VoiceInteractionService" />
+                </intent-filter>
+                <meta-data android:name="android.voice_interaction"
+                            android:resource="@xml/voice_interaction_service" />
+            </service>
+            <service android:name="com.nothing.voiceagent.assist.VoiceAssistSessionService"
+                      android:permission="android.permission.BIND_VOICE_INTERACTION"
+                      android:exported="true" />
+        </config-file>
+    </platform>
+</plugin>

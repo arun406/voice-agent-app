@@ -1,0 +1,39 @@
+{
+  "name": "com.nothing.voiceagent",
+  "displayName": "Voice Agent",
+  "version": "1.0.0",
+  "description": "A sample Apache Cordova application that responds to the deviceready event.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ecosystem:cordova"
+  ],
+  "author": "Apache Cordova Team",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "cordova-android": "^15.1.0",
+    "cordova-plugin-camera": "^8.0.0",
+    "cordova-plugin-inappbrowser": "^7.0.0",
+    "cordova-plugin-local-llm": "file:../plugins-src/local-llm-plugin",
+    "cordova-plugin-speechrecognition": "^1.2.0",
+    "cordova-plugin-statusbar": "^4.0.0",
+    "cordova-plugin-tts": "^0.2.3"
+  },
+  "cordova": {
+    "platforms": [
+      "android"
+    ],
+    "plugins": {
+      "cordova-plugin-speechrecognition": {},
+      "cordova-plugin-tts": {},
+      "cordova-plugin-statusbar": {},
+      "cordova-plugin-camera": {
+        "ANDROIDX_CORE_VERSION": "1.6.+"
+      },
+      "com.nothing.voiceagent.localllm": {},
+      "cordova-plugin-inappbrowser": {}
+    }
+  }
+}

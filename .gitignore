@@ -1,0 +1,24 @@
+node_modules/
+angular-app/dist/
+cordova-app/www/
+cordova-app/platforms/
+cordova-app/plugins/
+plugins-src/local-llm-plugin/src/android/cpp/llama.cpp/
+.devtools/
+*.log
+.DS_Store
+
+# LLM/vision model weights — multi-GB GGUF files, pulled per MODEL.md instead of
+# committed. Non-model assets in models/ (icons, design files) are small and fine to keep.
+models/*.gguf
+
+# Secrets / credentials — none should ever be hardcoded (see auth.config.ts, mcp.config.ts
+# placeholders), but ignore these by pattern as a backstop.
+.env
+.env.*
+*.keystore
+*.jks
+*.p12
+*.pem
+google-services.json
+

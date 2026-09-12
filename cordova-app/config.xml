@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.nothing.voiceagent" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+    <name>Voice Agent</name>
+    <description>Siri-style voice assistant backed by a local LLM and your own backend.</description>
+    <author email="dev@cordova.apache.org" href="https://cordova.apache.org">
+        Voice Agent
+    </author>
+    <content src="index.html" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+
+    <preference name="AndroidXEnabled" value="true" />
+    <!-- Matches the app's dark theme so there's no white flash from the WebView's
+         default background before content paints, or during resize/rotation. -->
+    <preference name="BackgroundColor" value="#ff05050a" />
+    <!-- Required alongside viewport-fit=cover (index.html) — without it, Chromium
+         reserves the display-cutout safe area as an unpainted white strip instead of
+         letting page content extend into it. -->
+    <preference name="AndroidEdgeToEdge" value="true" />
+
+    <!-- App icon: a glowing green orb matching the assistant's "speaking" state color,
+         replacing cordova-android's generic default. Adaptive icon (foreground PNG +
+         solid background color) for API 26+, legacy square PNGs as fallback. -->
+    <icon density="ldpi" src="res/icon/android/icon-ldpi.png" />
+    <icon density="mdpi" src="res/icon/android/icon-mdpi.png" />
+    <icon density="hdpi" src="res/icon/android/icon-hdpi.png" />
+    <icon density="xhdpi" src="res/icon/android/icon-xhdpi.png" />
+    <icon density="xxhdpi" src="res/icon/android/icon-xxhdpi.png" />
+    <icon density="xxxhdpi" src="res/icon/android/icon-xxxhdpi.png" />
+    <icon density="ldpi" background="res/icon/android/background-ldpi.png" foreground="res/icon/android/foreground-ldpi.png" />
+    <icon density="mdpi" background="res/icon/android/background-mdpi.png" foreground="res/icon/android/foreground-mdpi.png" />
+    <icon density="hdpi" background="res/icon/android/background-hdpi.png" foreground="res/icon/android/foreground-hdpi.png" />
+    <icon density="xhdpi" background="res/icon/android/background-xhdpi.png" foreground="res/icon/android/foreground-xhdpi.png" />
+    <icon density="xxhdpi" background="res/icon/android/background-xxhdpi.png" foreground="res/icon/android/foreground-xxhdpi.png" />
+    <icon density="xxxhdpi" background="res/icon/android/background-xxxhdpi.png" foreground="res/icon/android/foreground-xxxhdpi.png" />
+
+    <!-- Splash screen icon (Android 12+ SplashScreen API) — same green orb, transparent
+         background (the theme's windowSplashScreenBackground fills behind it). -->
+    <preference name="AndroidWindowSplashScreenAnimatedIcon" value="res/screen/android/splash.png" />
+
+    <platform name="android">
+        <allow-intent href="market:*" />
+        <!-- Microphone (speech recognition) + network (backend API calls) -->
+        <config-file target="AndroidManifest.xml" parent="/manifest">
+            <uses-permission android:name="android.permission.RECORD_AUDIO" />
+            <uses-permission android:name="android.permission.INTERNET" />
+        </config-file>
+
+        <!-- cordova-android's generated theme sets android:colorBackground to a pale
+             default (#FAF8FF), which is what BackgroundColor (splash-screen only)
+             doesn't touch — it shows through as a white sliver in the edge-to-edge
+             system-bar inset areas on Android 15+. Patched by hooks/after_prepare
+             (config-file can't cleanly replace an existing same-named resource here
+             without producing a duplicate-resource build error). -->
+        <hook type="after_prepare" src="hooks/fix-background-color.js" />
+    </platform>
+</widget>
